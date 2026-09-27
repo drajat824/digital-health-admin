@@ -36,11 +36,11 @@ export default function App() {
               <Route index element={<Navigate to="dashboard" replace />} />
               <Route path="dashboard" element={<Dashboard />} />
 
-              {/* Manajemen User */}
+              {/* User Management */}
               <Route path="users" element={<UsersList />} />
               <Route path="users/:userId" element={<UserDetail />} />
 
-              {/* Manajemen User -> pilih user -> Manajemen Medis (4 sub-halaman) */}
+              {/* User Management -> pilih user -> Manajemen Medis (4 sub-halaman) */}
               <Route path="users/:userId/medical" element={<MedicalLayout />}>
                 <Route index element={<Navigate to="heart-health" replace />} />
                 <Route path="heart-health" element={<HeartHealthPage />} />

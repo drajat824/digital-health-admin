@@ -103,7 +103,7 @@ export default function HealthRecordsPage() {
     e.preventDefault();
     const f = demoForm;
     if (!f.check_date || !f.date_of_birth || !f.gender || !f.age || !f.height || !f.weight || !f.bmi) {
-      setDemoError("Semua field wajib (kecuali gula darah & kolesterol) harus diisi.");
+      setDemoError("All required fields (except blood sugar & cholesterol) must be filled.");
       return;
     }
     setSaving(true);
@@ -214,30 +214,30 @@ export default function HealthRecordsPage() {
       {/* ---- Demographic ---- */}
       <Card>
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-800">Demografi & Metrik Kesehatan</h3>
-          <Button onClick={openDemoCreate}>+ Tambah</Button>
+          <h3 className="text-sm font-bold text-slate-800">Demographics & Health Metrics</h3>
+          <Button onClick={openDemoCreate}>+ Add</Button>
         </div>
         {demographics.length === 0 ? (
-          <EmptyState title="Belum ada data demografi" icon="🧬" />
+          <EmptyState title="No demographics data yet" icon="🧬" />
         ) : (
           <div className="overflow-x-auto rounded-lg border border-surface-border">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-muted text-left text-xs font-semibold uppercase text-slate-500">
-                  <th className="px-3 py-2">Tanggal</th>
-                  <th className="px-3 py-2">Gender/Usia</th>
-                  <th className="px-3 py-2">TB/BB</th>
+                  <th className="px-3 py-2">Date</th>
+                  <th className="px-3 py-2">Gender/Age</th>
+                  <th className="px-3 py-2">Height/Weight</th>
                   <th className="px-3 py-2">BMI</th>
-                  <th className="px-3 py-2">Gula Darah</th>
-                  <th className="px-3 py-2">Kolesterol</th>
-                  <th className="px-3 py-2">Aksi</th>
+                  <th className="px-3 py-2">Blood Sugar</th>
+                  <th className="px-3 py-2">Cholesterol</th>
+                  <th className="px-3 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-border">
                 {demographics.map((d) => (
                   <tr key={d.id}>
                     <td className="px-3 py-2">{new Date(d.check_date).toLocaleDateString("id-ID")}</td>
-                    <td className="px-3 py-2">{d.gender}, {d.age} th</td>
+                    <td className="px-3 py-2">{d.gender}, {d.age} yrs</td>
                     <td className="px-3 py-2">{d.height}cm / {d.weight}kg</td>
                     <td className="px-3 py-2">
                       <Badge tone={d.bmi < 18.5 || d.bmi >= 25 ? "amber" : "green"}>{d.bmi}</Badge>
@@ -247,7 +247,7 @@ export default function HealthRecordsPage() {
                     <td className="px-3 py-2">
                       <div className="flex gap-2">
                         <button onClick={() => openDemoEdit(d)} className="rounded-md bg-amber-400 px-2 py-1 text-xs text-white hover:bg-amber-500">Edit</button>
-                        <button onClick={() => setDemoDelete(d)} className="rounded-md bg-danger-500 px-2 py-1 text-xs text-white hover:bg-danger-600">Hapus</button>
+                        <button onClick={() => setDemoDelete(d)} className="rounded-md bg-danger-500 px-2 py-1 text-xs text-white hover:bg-danger-600">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -261,11 +261,11 @@ export default function HealthRecordsPage() {
       {/* ---- Medical records (file uploads) ---- */}
       <Card>
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-800">Dokumen Rekam Medis</h3>
-          <Button onClick={openRecCreate}>+ Tambah Dokumen</Button>
+          <h3 className="text-sm font-bold text-slate-800">Medical Record Documents</h3>
+          <Button onClick={openRecCreate}>+ Add Document</Button>
         </div>
         <p className="mb-3 text-xs text-slate-400">
-          Setiap entri bisa memuat hingga 3 file: hasil lab, citra medis (X-Ray/MRI), dan dokumen diagnosis.
+          Each entry can include up to 3 files: lab results, medical images (X-Ray/MRI), and diagnosis documents.
         </p>
         {records.length === 0 ? (
           <EmptyState title="Belum ada dokumen rekam medis" icon="📄" />
@@ -274,11 +274,11 @@ export default function HealthRecordsPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-muted text-left text-xs font-semibold uppercase text-slate-500">
-                  <th className="px-3 py-2">Tanggal</th>
-                  <th className="px-3 py-2">Hasil Lab</th>
-                  <th className="px-3 py-2">Citra Medis</th>
-                  <th className="px-3 py-2">Diagnosis</th>
-                  <th className="px-3 py-2">Aksi</th>
+                    <th className="px-3 py-2">Date</th>
+                      <th className="px-3 py-2">Lab Result</th>
+                      <th className="px-3 py-2">Medical Image</th>
+                      <th className="px-3 py-2">Diagnosis</th>
+                      <th className="px-3 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-border">
@@ -288,7 +288,7 @@ export default function HealthRecordsPage() {
                     <td className="px-3 py-2">
                       {r.lab_result ? (
                         <a href={getFileViewUrl(r.lab_result)} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline">
-                          Lihat File
+                          View File
                         </a>
                       ) : (
                         <span className="text-slate-400">—</span>
@@ -297,7 +297,7 @@ export default function HealthRecordsPage() {
                     <td className="px-3 py-2">
                       {r.medical_image ? (
                         <a href={getFileViewUrl(r.medical_image)} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline">
-                          Lihat File
+                          View File
                         </a>
                       ) : (
                         <span className="text-slate-400">—</span>
@@ -306,7 +306,7 @@ export default function HealthRecordsPage() {
                     <td className="px-3 py-2">
                       {r.diagnosis ? (
                         <a href={getFileViewUrl(r.diagnosis)} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline">
-                          Lihat File
+                          View File
                         </a>
                       ) : (
                         <span className="text-slate-400">—</span>
@@ -314,8 +314,8 @@ export default function HealthRecordsPage() {
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex gap-2">
-                        <button onClick={() => openRecEdit(r)} className="rounded-md bg-amber-400 px-2 py-1 text-xs text-white hover:bg-amber-500">Edit</button>
-                        <button onClick={() => setRecDelete(r)} className="rounded-md bg-danger-500 px-2 py-1 text-xs text-white hover:bg-danger-600">Hapus</button>
+                          <button onClick={() => openRecEdit(r)} className="rounded-md bg-amber-400 px-2 py-1 text-xs text-white hover:bg-amber-500">Edit</button>
+                        <button onClick={() => setRecDelete(r)} className="rounded-md bg-danger-500 px-2 py-1 text-xs text-white hover:bg-danger-600">Delete</button>
                       </div>
                     </td>
                   </tr>
@@ -327,14 +327,14 @@ export default function HealthRecordsPage() {
       </Card>
 
       {/* Demographic modal */}
-      <Modal open={demoModal.open} title={demoModal.data ? "Edit Demografi" : "Tambah Demografi"} onClose={() => setDemoModal({ open: false, data: null })}>
+      <Modal open={demoModal.open} title={demoModal.data ? "Edit Demographics" : "Add Demographics"} onClose={() => setDemoModal({ open: false, data: null })}>
         <form onSubmit={submitDemo} className="space-y-4">
           {demoError && <div className="rounded-lg bg-danger-50 px-3 py-2 text-sm text-danger-600">{demoError}</div>}
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Tanggal Check" required>
+            <Field label="Check Date" required>
               <input type="date" className={inputClass} value={demoForm.check_date} onChange={(e) => setDemoForm({ ...demoForm, check_date: e.target.value })} />
             </Field>
-            <Field label="Tanggal Lahir" required>
+            <Field label="Date of Birth" required>
               <input type="date" className={inputClass} value={demoForm.date_of_birth} onChange={(e) => setDemoForm({ ...demoForm, date_of_birth: e.target.value })} />
             </Field>
           </div>
@@ -346,15 +346,15 @@ export default function HealthRecordsPage() {
                 ))}
               </select>
             </Field>
-            <Field label="Usia" required>
+            <Field label="Age" required>
               <input type="number" className={inputClass} value={demoForm.age} onChange={(e) => setDemoForm({ ...demoForm, age: e.target.value })} />
             </Field>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Tinggi Badan (cm)" required>
+            <Field label="Height (cm)" required>
               <input type="number" step="0.1" className={inputClass} value={demoForm.height} onChange={(e) => setDemoForm({ ...demoForm, height: e.target.value })} onBlur={autoBmi} />
             </Field>
-            <Field label="Berat Badan (kg)" required>
+            <Field label="Weight (kg)" required>
               <input type="number" step="0.1" className={inputClass} value={demoForm.weight} onChange={(e) => setDemoForm({ ...demoForm, weight: e.target.value })} onBlur={autoBmi} />
             </Field>
           </div>
@@ -362,62 +362,62 @@ export default function HealthRecordsPage() {
             <input type="number" step="0.01" className={inputClass} value={demoForm.bmi} onChange={(e) => setDemoForm({ ...demoForm, bmi: e.target.value })} />
           </Field>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Gula Darah (mg/dL)">
+            <Field label="Blood Sugar (mg/dL)">
               <input type="number" step="0.1" className={inputClass} value={demoForm.blood_sugar} onChange={(e) => setDemoForm({ ...demoForm, blood_sugar: e.target.value })} />
             </Field>
-            <Field label="Kolesterol (mg/dL)">
+            <Field label="Cholesterol (mg/dL)">
               <input type="number" step="0.1" className={inputClass} value={demoForm.cholesterol} onChange={(e) => setDemoForm({ ...demoForm, cholesterol: e.target.value })} />
             </Field>
           </div>
           <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="secondary" onClick={() => setDemoModal({ open: false, data: null })}>Batal</Button>
-            <Button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan"}</Button>
+            <Button type="button" variant="secondary" onClick={() => setDemoModal({ open: false, data: null })}>Cancel</Button>
+            <Button type="submit" disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
           </div>
         </form>
       </Modal>
 
       {/* Medical record modal */}
-      <Modal open={recModal.open} title={recModal.data ? "Edit Dokumen Rekam Medis" : "Tambah Dokumen Rekam Medis"} onClose={() => setRecModal({ open: false, data: null })}>
+      <Modal open={recModal.open} title={recModal.data ? "Edit Medical Record Document" : "Add Medical Record Document"} onClose={() => setRecModal({ open: false, data: null })}>
         <form onSubmit={submitRec} className="space-y-4">
           {recError && <div className="rounded-lg bg-danger-50 px-3 py-2 text-sm text-danger-600">{recError}</div>}
-          <Field label="Tanggal Pemeriksaan">
+          <Field label="Examination Date">
             <input type="date" className={inputClass} value={recForm.check_date} onChange={(e) => setRecForm({ ...recForm, check_date: e.target.value })} />
           </Field>
-          <Field label="File Hasil Lab (PDF/Gambar)">
+          <Field label="Lab Result File (PDF/Image)">
             <input type="file" className={inputClass} onChange={(e) => setRecFiles({ ...recFiles, lab_result: e.target.files[0] })} />
             {recModal.data?.lab_result && !recFiles.lab_result && (
-              <p className="mt-1 text-xs text-slate-400">Sudah ada file — biarkan kosong untuk mempertahankan file lama.</p>
+              <p className="mt-1 text-xs text-slate-400">Existing file — leave empty to keep the current file.</p>
             )}
           </Field>
-          <Field label="File Citra Medis (X-Ray/MRI)">
+          <Field label="Medical Image File (X-Ray/MRI)">
             <input type="file" className={inputClass} onChange={(e) => setRecFiles({ ...recFiles, medical_image: e.target.files[0] })} />
             {recModal.data?.medical_image && !recFiles.medical_image && (
-              <p className="mt-1 text-xs text-slate-400">Sudah ada file — biarkan kosong untuk mempertahankan file lama.</p>
+              <p className="mt-1 text-xs text-slate-400">Existing file — leave empty to keep the current file.</p>
             )}
           </Field>
-          <Field label="File Diagnosis">
+          <Field label="Diagnosis File">
             <input type="file" className={inputClass} onChange={(e) => setRecFiles({ ...recFiles, diagnosis: e.target.files[0] })} />
             {recModal.data?.diagnosis && !recFiles.diagnosis && (
-              <p className="mt-1 text-xs text-slate-400">Sudah ada file — biarkan kosong untuk mempertahankan file lama.</p>
+              <p className="mt-1 text-xs text-slate-400">Existing file — leave empty to keep the current file.</p>
             )}
           </Field>
           <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="secondary" onClick={() => setRecModal({ open: false, data: null })}>Batal</Button>
-            <Button type="submit" disabled={saving}>{saving ? "Mengunggah..." : "Simpan"}</Button>
+            <Button type="button" variant="secondary" onClick={() => setRecModal({ open: false, data: null })}>Cancel</Button>
+            <Button type="submit" disabled={saving}>{saving ? "Uploading..." : "Save"}</Button>
           </div>
         </form>
       </Modal>
 
       <ConfirmDialog
         open={Boolean(demoDelete)}
-        message="Data demografi ini akan dihapus permanen."
+        message="This demographic data will be permanently deleted."
         loading={deleting}
         onCancel={() => setDemoDelete(null)}
         onConfirm={confirmDemoDelete}
       />
       <ConfirmDialog
         open={Boolean(recDelete)}
-        message="Dokumen rekam medis ini (beserta referensi filenya) akan dihapus permanen."
+        message="This medical record document (including its file references) will be permanently deleted."
         loading={deleting}
         onCancel={() => setRecDelete(null)}
         onConfirm={confirmRecDelete}

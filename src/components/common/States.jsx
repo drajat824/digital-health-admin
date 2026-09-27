@@ -1,4 +1,4 @@
-export function LoadingState({ label = "Memuat data..." }) {
+export function LoadingState({ label = "Loading data..." }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-slate-500">
       <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
@@ -7,7 +7,7 @@ export function LoadingState({ label = "Memuat data..." }) {
   );
 }
 
-export function EmptyState({ title = "Belum ada data", description, icon = "🗂️", action }) {
+export function EmptyState({ title = "No data yet", description, icon = "🗂️", action }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="text-4xl">{icon}</div>
@@ -20,7 +20,7 @@ export function EmptyState({ title = "Belum ada data", description, icon = "🗂
   );
 }
 
-export function ErrorState({ message = "Gagal memuat data", onRetry }) {
+export function ErrorState({ message = "Failed to load data", onRetry }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="text-4xl">⚠️</div>
@@ -30,7 +30,7 @@ export function ErrorState({ message = "Gagal memuat data", onRetry }) {
           onClick={onRetry}
           className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 transition"
         >
-          Coba lagi
+          Try again
         </button>
       )}
     </div>

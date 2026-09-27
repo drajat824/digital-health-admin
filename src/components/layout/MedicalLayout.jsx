@@ -4,16 +4,16 @@ import { LoadingState, ErrorState } from "../common/States";
 import useUserRecord from "../../hooks/useUserRecord";
 
 const TABS = [
-  { to: "heart-health", icon: "💓", label: "Kesehatan Jantung" },
-  { to: "medications", icon: "💊", label: "Obat & Jadwal" },
-  { to: "health-records", icon: "🩺", label: "Rekam Kesehatan" },
-  { to: "heart-model", icon: "🫀", label: "Model 3D Jantung" },
+  { to: "heart-health", icon: "💓", label: "Heart Health" },
+  { to: "medications", icon: "💊", label: "Medications & Schedule" },
+  { to: "health-records", icon: "🩺", label: "Health Records" },
+  { to: "heart-model", icon: "🫀", label: "3D Heart Model" },
 ];
 
 export default function MedicalLayout() {
   const { userId, user, loading, error } = useUserRecord();
 
-  if (loading) return <LoadingState label="Memuat data user..." />;
+  if (loading) return <LoadingState label="Loading user data..." />;
   if (error) return <ErrorState message={error} />;
 
   return (
@@ -21,7 +21,7 @@ export default function MedicalLayout() {
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
-            Manajemen Medis
+            Medical Management
           </p>
           <h1 className="text-xl font-extrabold text-slate-900">
             {user?.name || `User #${userId}`}{" "}
@@ -30,7 +30,7 @@ export default function MedicalLayout() {
           <p className="text-sm text-slate-500">{user?.email}</p>
         </div>
         <Link to={`/admin/users`} state={{ user }} className="text-sm text-brand-600 hover:underline">
-          ← Kembali ke User
+          ← Back to User
         </Link>
       </div>
 

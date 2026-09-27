@@ -1,9 +1,9 @@
 export default function ConfirmDialog({
   open,
-  title = "Konfirmasi",
+  title = "Confirm",
   message,
-  confirmLabel = "Hapus",
-  cancelLabel = "Batal",
+  confirmLabel = "Delete",
+  cancelLabel = "Cancel",
   danger = true,
   loading = false,
   onConfirm,
@@ -31,7 +31,7 @@ export default function ConfirmDialog({
               danger ? "bg-danger-600 hover:bg-danger-700" : "bg-brand-600 hover:bg-brand-700"
             }`}
           >
-            {loading ? "Memproses..." : confirmLabel}
+            {loading ? "Processing..." : confirmLabel}
           </button>
         </div>
       </div>

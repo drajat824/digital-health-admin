@@ -48,7 +48,7 @@ export default function HeartHealthPage() {
     load();
   }, [load]);
 
-  if (loading) return <LoadingState label="Memuat data kesehatan jantung..." />;
+  if (loading) return <LoadingState label="Loading heart health data..." />;
   if (error) return <ErrorState message={error} onRetry={load} />;
 
   const realtimeChartData = [...realtimeRows]
@@ -70,15 +70,15 @@ export default function HeartHealthPage() {
     <div className="space-y-5">
       <Card>
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-800">Heart Rate Realtime</h3>
+          <h3 className="text-sm font-bold text-slate-800">Heart Rate (Real-Time)</h3>
           {pagination && (
             <span className="text-xs text-slate-400">
-              Halaman {pagination.currentPage} / {pagination.totalPages} · {pagination.totalItems} data
+              Page {pagination.currentPage} / {pagination.totalPages} · {pagination.totalItems} data
             </span>
           )}
         </div>
         {realtimeChartData.length === 0 ? (
-          <EmptyState title="Belum ada data heart rate realtime" icon="💓" />
+          <EmptyState title="No real-time heart rate data yet" icon="💓" />
         ) : (
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={realtimeChartData}>
@@ -97,7 +97,7 @@ export default function HeartHealthPage() {
               disabled={page === 1}
               className="text-brand-600 disabled:text-slate-300"
             >
-              ← Sebelumnya
+              ← Previous
             </button>
             <span className="text-slate-400">|</span>
             <button
@@ -105,16 +105,16 @@ export default function HeartHealthPage() {
               disabled={page === pagination.totalPages}
               className="text-brand-600 disabled:text-slate-300"
             >
-              Berikutnya →
+              Next →
             </button>
           </div>
         )}
       </Card>
 
       <Card>
-        <h3 className="mb-3 text-sm font-bold text-slate-800">Heart Rate Agregasi</h3>
+        <h3 className="mb-3 text-sm font-bold text-slate-800">Heart Rate Aggregation</h3>
         {aggChartData.length === 0 ? (
-          <EmptyState title="Belum ada data agregasi heart rate" icon="📈" />
+          <EmptyState title="No heart rate aggregation data yet" icon="📈" />
         ) : (
           <ResponsiveContainer width="100%" height={220}>
             <LineChart data={aggChartData}>
@@ -129,16 +129,16 @@ export default function HeartHealthPage() {
       </Card>
 
       <Card>
-        <h3 className="mb-3 text-sm font-bold text-slate-800">Riwayat Heart Issue</h3>
+        <h3 className="mb-3 text-sm font-bold text-slate-800">Heart Issue History</h3>
         {issues.length === 0 ? (
-          <EmptyState title="Tidak ada isu jantung tercatat" icon="🚨" />
+          <EmptyState title="No heart issues recorded" icon="🚨" />
         ) : (
           <div className="overflow-x-auto rounded-lg border border-surface-border">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-muted text-left text-xs font-semibold uppercase text-slate-500">
-                  <th className="px-3 py-2">Waktu</th>
-                  <th className="px-3 py-2">Jenis</th>
+                  <th className="px-3 py-2">Time</th>
+                  <th className="px-3 py-2">Type</th>
                   <th className="px-3 py-2">BPM</th>
                 </tr>
               </thead>
@@ -147,7 +147,7 @@ export default function HeartHealthPage() {
                   <tr key={i.id}>
                     <td className="px-3 py-2">{new Date(i.recorded_at).toLocaleString("id-ID")}</td>
                     <td className="px-3 py-2">
-                      <Badge tone={i.issue_type === "TAKIKARDIA" ? "red" : "amber"}>{i.issue_type}</Badge>
+                      <Badge tone={i.issue_type === "TAKIKARDIA" ? "red" : "amber"}>{i.issue_type === "TAKIKARDIA" ? "Tachycardia" : i.issue_type}</Badge>
                     </td>
                     <td className="px-3 py-2 font-medium">{i.bpm_recorded}</td>
                   </tr>

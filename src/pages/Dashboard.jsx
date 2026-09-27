@@ -31,6 +31,7 @@ export default function Dashboard() {
       const heartIssues = issues.data || [];
       const medications = meds.data || [];
       const medSchedules = schedules.data || [];
+      const usersList = users.data || []; // Ambil array data user
 
       const pendingSchedules = medSchedules.filter((s) => s.status === "pending").length;
       const missedSchedules = medSchedules.filter((s) => s.status === "missed").length;
@@ -51,13 +52,20 @@ export default function Dashboard() {
         }));
 
       setData({
-        userCount: users.data.length,
+        userCount: usersList.length,
         heartRateCount: hr.data.pagination?.totalItems ?? realtimeRows.length,
         heartIssueCount: heartIssues.length,
         medicationCount: medications.length,
         pendingSchedules,
         missedSchedules,
-        recentIssues: heartIssues.slice(0, 5),
+        // Mapping untuk mendapatkan nama user berdasarkan user_id
+        recentIssues: heartIssues.slice(0, 5).map(issue => {
+          const user = usersList.find(u => String(u.id) === String(issue.user_id));
+          return {
+            ...issue,
+            userName: user?.name || `User #${issue.user_id}`
+          };
+        }),
         realtimeTrend,
         aggTrend,
       });
@@ -72,33 +80,33 @@ export default function Dashboard() {
     load();
   }, []);
 
-  if (loading) return <LoadingState label="Memuat ringkasan dashboard..." />;
+  if (loading) return <LoadingState label="Loading dashboard summary..." />;
   if (error) return <ErrorState message={error} onRetry={load} />;
 
   return (
     <div>
       <PageHeader
         title="Dashboard"
-        description="Ringkasan data kesehatan dari seluruh pengguna Digital Health."
+        description="Summary of health data from all Human Digital Twin users."
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard label="Total User (non-admin)" value={data.userCount} icon="🧑‍⚕️" tone="brand" />
-        <StatCard label="Data Heart Rate Realtime" value={data.heartRateCount} icon="💓" tone="emerald" />
+        <StatCard label="Total Users (non-admin)" value={data.userCount} icon="🧑‍⚕️" tone="brand" />
+        <StatCard label="Realtime Heart Rate Data" value={data.heartRateCount} icon="💓" tone="emerald" />
         <StatCard label="Heart Issues" value={data.heartIssueCount} icon="🚨" tone="danger" />
-        <StatCard label="Data Obat Terdaftar" value={data.medicationCount} icon="💊" tone="amber" />
+        <StatCard label="Registered Medications" value={data.medicationCount} icon="💊" tone="amber" />
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <StatCard label="Jadwal Pending" value={data.pendingSchedules} icon="⏳" tone="amber" />
-        <StatCard label="Jadwal Terlewat" value={data.missedSchedules} icon="❌" tone="danger" />
+        <StatCard label="Pending Schedules" value={data.pendingSchedules} icon="⏳" tone="amber" />
+        <StatCard label="Missed Schedules" value={data.missedSchedules} icon="❌" tone="danger" />
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* <Card>
           <h3 className="mb-4 text-sm font-semibold text-slate-800">Heart Rate Realtime</h3>
           {data.realtimeTrend.length === 0 ? (
-            <p className="text-sm text-slate-500">Belum ada data heart rate realtime.</p>
+            <p className="text-sm text-slate-500">No realtime heart rate data available.</p>
           ) : (
             <ResponsiveContainer width="100%" height={240}>
               <LineChart data={data.realtimeTrend}>
@@ -113,9 +121,9 @@ export default function Dashboard() {
         </Card> */}
 
         {/* <Card>
-          <h3 className="mb-4 text-sm font-semibold text-slate-800">Heart Rate Agregasi</h3>
+          <h3 className="mb-4 text-sm font-semibold text-slate-800">Heart Rate Aggregation</h3>
           {data.aggTrend.length === 0 ? (
-            <p className="text-sm text-slate-500">Belum ada data agregasi heart rate.</p>
+            <p className="text-sm text-slate-500">No heart rate aggregation data available.</p>
           ) : (
             <ResponsiveContainer width="100%" height={240}>
               <LineChart data={data.aggTrend}>
@@ -131,14 +139,14 @@ export default function Dashboard() {
       </div>
 
       <Card className="mt-4">
-        <h3 className="mb-4 text-sm font-semibold text-slate-800">Heart Issue Terbaru</h3>
+        <h3 className="mb-4 text-sm font-semibold text-slate-800">Recent Heart Issues</h3>
         {data.recentIssues.length === 0 ? (
-          <p className="text-sm text-slate-500">Tidak ada isu jantung terbaru.</p>
+          <p className="text-sm text-slate-500">No recent heart issues.</p>
         ) : (
           <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {data.recentIssues.map((issue) => (
               <li key={issue.id} className="rounded-lg border border-surface-border p-3 text-sm">
-                <p className="font-medium text-slate-800">User #{issue.user_id}</p>
+                <p className="font-medium text-slate-800">{issue.userName}</p>
                 <p className="text-xs text-slate-500">{new Date(issue.recorded_at).toLocaleString("id-ID")}</p>
                 <div className="mt-2 flex items-center justify-between">
                   <Badge tone={issue.issue_type === "TAKIKARDIA" ? "red" : "amber"}>{issue.issue_type}</Badge>

@@ -1,8 +1,8 @@
-# Digital Health — Admin Dashboard
+# Human Digital Twin — Admin Dashboard
 
-Admin dashboard (ReactJS + Vite) untuk **Digital Health**. Dokumen ini mencakup versi
-**revisi ke-2**: Manajemen User pakai endpoint asli (list + delete), struktur navigasi
-`Manajemen User → pilih user → Manajemen Medis` (4 sub-halaman per user_id), API
+Admin dashboard (ReactJS + Vite) untuk **Human Digital Twin**. Dokumen ini mencakup versi
+**revisi ke-2**: User Management pakai endpoint asli (list + delete), struktur navigasi
+`User Management → pilih user → Manajemen Medis` (4 sub-halaman per user_id), API
 heart rate realtime & medication schedule mengikuti kontrak backend terbaru,
 `periodic_checks` dihapus total, dan 2 fitur baru: **Demografi** & **Dokumen Rekam
 Medis (upload file)**.
@@ -21,7 +21,7 @@ Letakkan model 3D di `public/models/heart.glb`.
 
 ## Ringkasan Perubahan di Revisi Ini
 
-### 1. Manajemen User (dulu: derivasi dari data lain -> sekarang: endpoint asli)
+### 1. User Management (dulu: derivasi dari data lain -> sekarang: endpoint asli)
 - `GET` daftar user & `DELETE` user sekarang pakai `authController.getAllUsers` /
   `deleteUser`. **Catatan penting**: `authRoutes.js` versi terbaru tidak
   disertakan dalam revisi ini, jadi path endpoint (`/api/auth/users`,
@@ -41,7 +41,7 @@ Letakkan model 3D di `public/models/heart.glb`.
 - Form edit jadwal di halaman **Obat & Jadwal** sekarang menyediakan semua field
   tersebut (bukan cuma dropdown status seperti revisi sebelumnya).
 
-### 3. Struktur navigasi: Manajemen User -> Manajemen Medis
+### 3. Struktur navigasi: User Management -> Manajemen Medis
 ```
 /admin/users                              -> daftar user (list + delete)
 /admin/users/:userId                      -> detail user + kartu menu Manajemen Medis
@@ -92,9 +92,9 @@ kedua field itu diisi (bisa diedit manual).
 `src/api/medicalRecordApi.js` + bagian bawah halaman **Rekam Kesehatan**. CRUD
 dengan **3 file opsional** per entri: `lab_result`, `medical_image`, `diagnosis`
 (multipart/form-data ke `POST`/`PUT /api/medical-records`, sesuai Multer di
-backend). Link "Lihat File" memakai `GET /api/medical-records/view?path=...`.
+backend). Link "View File" memakai `GET /api/medical-records/view?path=...`.
 
-**Catatan teknis penting**: link "Lihat File" dibuka langsung sebagai `<a href>`
+**Catatan teknis penting**: link "View File" dibuka langsung sebagai `<a href>`
 ke URL backend (tab baru), **bukan** lewat axios — sehingga tidak membawa header
 `Authorization` dari localStorage. Ini aman untuk saat ini karena tidak ada
 middleware auth pada route manapun yang diberikan (lihat gap #2 di bawah), tapi

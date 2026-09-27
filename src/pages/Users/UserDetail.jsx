@@ -7,26 +7,26 @@ const MEDICAL_SECTIONS = [
   {
     to: "heart-health",
     icon: "💓",
-    title: "Kesehatan Jantung",
-    desc: "Heart rate realtime, agregasi, dan riwayat isu jantung.",
+    title: "Heart Health",
+    desc: "Real-time heart rate, aggregation, and heart issue history.",
   },
   {
     to: "medications",
     icon: "💊",
-    title: "Obat & Jadwal",
-    desc: "Data obat pasien dan jadwal minum obat.",
+    title: "Medications & Schedule",
+    desc: "Patient medication data and medication schedule.",
   },
   {
     to: "health-records",
     icon: "🩺",
-    title: "Rekam Kesehatan",
-    desc: "Data demografi/metrik kesehatan dan dokumen rekam medis.",
+    title: "Health Records",
+    desc: "Demographic data/health metrics and medical records documents.",
   },
   {
     to: "heart-model",
     icon: "🫀",
-    title: "Model 3D Jantung",
-    desc: "Visualisasi interaktif model anatomi jantung.",
+    title: "3D Heart Model",
+    desc: "Interactive visualization of heart anatomy model.",
   },
 ];
 
@@ -48,7 +48,7 @@ export default function UserDetail() {
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-xl font-extrabold tracking-wide text-slate-900">DETAIL USER</h1>
         <Link to="/admin/users" className="text-sm text-brand-600 hover:underline">
-          ← Kembali ke Manajemen User
+          ← Kembali ke User Management
         </Link>
       </div>
 

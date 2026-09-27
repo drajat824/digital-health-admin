@@ -19,7 +19,7 @@ export default function Topbar({ onMenuClick }) {
       <button
         onClick={onMenuClick}
         className="rounded-lg p-2 text-slate-600 hover:bg-surface-muted lg:hidden"
-        aria-label="Buka menu"
+        aria-label="Open menu"
       >
         ☰
       </button>

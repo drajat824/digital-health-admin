@@ -56,14 +56,14 @@ export default function ProfilePage() {
           className="mt-6 w-full justify-center"
           onClick={() => setConfirmingLogout(true)}
         >
-          Keluar dari Akun
+          LOGOUT dari Akun
         </Button>
       </Card>
 
       {confirmingLogout && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
           <div className="w-full max-w-sm rounded-xl bg-white p-6 shadow-xl">
-            <h3 className="text-lg font-semibold text-slate-900">Keluar dari akun?</h3>
+            <h3 className="text-lg font-semibold text-slate-900">LOGOUT dari akun?</h3>
             <p className="mt-2 text-sm text-slate-600">
               Anda perlu login kembali untuk mengakses dashboard.
             </p>
@@ -77,11 +77,11 @@ export default function ProfilePage() {
               <button
                 onClick={() => {
                   logout();
-                  toast.info("Anda telah keluar");
+                  toast.info("Anda telah LOGOUT");
                 }}
                 className="rounded-lg bg-danger-600 px-4 py-2 text-sm font-medium text-white hover:bg-danger-700"
               >
-                Ya, Keluar
+                Ya, LOGOUT
               </button>
             </div>
           </div>

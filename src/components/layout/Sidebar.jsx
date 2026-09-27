@@ -3,12 +3,12 @@ import { useAuth } from "../../context/AuthContext";
 
 const NAV_SECTIONS = [
   {
-    label: "Umum",
+    label: "General",
     items: [{ to: "/admin/dashboard", label: "Dashboard", icon: "📊" }],
   },
   {
-    label: "Data Pasien",
-    items: [{ to: "/admin/users", label: "Manajemen User", icon: "🧑‍⚕️" }],
+    label: "Patient Data",
+    items: [{ to: "/admin/users", label: "User Management", icon: "🧑‍⚕️" }],
   }
 ];
 
@@ -30,9 +30,9 @@ export default function Sidebar({ open, onClose }) {
       >
         <div className="px-5 pt-7 pb-6">
           <p className="text-xl font-extrabold leading-tight text-white">
-            DIGITAL HEALTH
+            Human Digital Twin
             <br />
-            ADMIN
+            Admin
           </p>
         </div>
 
@@ -70,7 +70,7 @@ export default function Sidebar({ open, onClose }) {
             onClick={logout}
             className="w-full rounded-lg bg-[#e04b4b] py-3 text-sm font-semibold tracking-wide text-white hover:bg-[#c93f3f] transition"
           >
-            KELUAR
+            LOGOUT
           </button>
         </div>
       </aside>

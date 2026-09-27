@@ -62,13 +62,13 @@ export default function UsersList() {
     e.preventDefault();
     setFormError("");
     if (!form.name || !form.email || !form.password) {
-      setFormError("Nama, email, dan password wajib diisi.");
+      setFormError("Name, email, and password are required.");
       return;
     }
     setSaving(true);
     try {
       await register(form);
-      toast.success("User berhasil ditambahkan");
+      toast.success("User added successfully");
       setShowAdd(false);
       setForm({ name: "", email: "", password: "", role: "user" });
       load();
@@ -83,7 +83,7 @@ export default function UsersList() {
     setDeleting(true);
     try {
       await deleteUser(deleteTarget.id);
-      toast.success("User berhasil dihapus");
+      toast.success("User deleted successfully");
       setDeleteTarget(null);
       load();
     } catch (err) {
@@ -95,7 +95,7 @@ export default function UsersList() {
 
   return (
     <div>
-      <h1 className="mb-5 text-2xl font-extrabold tracking-wide text-slate-900">MANAJEMEN USER</h1>
+      <h1 className="mb-5 text-2xl font-extrabold tracking-wide text-slate-900">User Management</h1>
 
       <Card>
         <div className="mb-4 flex flex-wrap items-center gap-3 justify-between">
@@ -118,19 +118,19 @@ export default function UsersList() {
               </select>
             </div>
             <div className="flex items-center gap-2 text-sm">
-              <span className="text-slate-600">Cari</span>
+              <span className="text-slate-600">Search</span>
               <input
                 value={query}
                 onChange={(e) => {
                   setQuery(e.target.value);
                   setPage(1);
                 }}
-                placeholder="Cari nama, email, atau ID.."
+                placeholder="Search name, email, or ID.."
                 className="w-64 rounded-lg border border-slate-300 px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-brand-200"
               />
             </div>
           </div>
-          <Button onClick={() => setShowAdd(true)}>+ Tambah User</Button>
+          <Button onClick={() => setShowAdd(true)}>+ Add User</Button>
         </div>
 
         {loading ? (
@@ -138,25 +138,25 @@ export default function UsersList() {
         ) : error ? (
           <ErrorState message={error} onRetry={load} />
         ) : filtered.length === 0 ? (
-          <EmptyState title="Belum ada user" description="Tambahkan user pertama lewat tombol di atas." />
+          <EmptyState title="No users yet" description="Add the first user using the button above." />
         ) : (
           <>
             <div className="overflow-x-auto rounded-xl border border-surface-border">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-muted text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    <th className="px-4 py-3">ID</th>
-                    <th className="px-4 py-3">Nama</th>
+                    <th className="px-4 py-3">No</th>
+                    <th className="px-4 py-3">Name</th>
                     <th className="px-4 py-3">Email</th>
                     <th className="px-4 py-3">Role</th>
-                    <th className="px-4 py-3">Manajemen Medis</th>
-                    <th className="px-4 py-3">Aksi</th>
+                    <th className="px-4 py-3">Medical Management</th>
+                    <th className="px-4 py-3">Config</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-border">
-                  {pageRows.map((u) => (
+                  {pageRows.map((u, i) => (
                     <tr key={u.id} className="hover:bg-surface-muted/60 transition">
-                      <td className="px-4 py-3 font-mono">{u.id}</td>
+                      <td className="px-4 py-3 font-mono">{i + 1}</td>
                       <td className="px-4 py-3 font-medium text-slate-800">{u.name}</td>
                       <td className="px-4 py-3">{u.email}</td>
                       <td className="px-4 py-3">
@@ -167,7 +167,7 @@ export default function UsersList() {
                           onClick={() => navigate(`/admin/users/${u.id}/medical/heart-health`, { state: { user: u } })}
                           className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 transition"
                         >
-                          ATUR
+                          ORGANIZE DATA
                         </button>
                       </td>
                       <td className="px-4 py-3">
@@ -175,7 +175,7 @@ export default function UsersList() {
                           onClick={() => setDeleteTarget(u)}
                           className="rounded-md bg-danger-500 px-2 py-1.5 text-xs text-white hover:bg-danger-600 transition"
                         >
-                          Hapus
+                          DELETE
                         </button>
                       </td>
                     </tr>
@@ -217,12 +217,12 @@ export default function UsersList() {
         )}
       </Card>
 
-      <Modal open={showAdd} title="Tambah User Baru" onClose={() => setShowAdd(false)}>
+      <Modal open={showAdd} title="Add New User" onClose={() => setShowAdd(false)}>
         <form onSubmit={handleAddUser} className="space-y-4">
           {formError && (
             <div className="rounded-lg bg-danger-50 px-3 py-2 text-sm text-danger-600">{formError}</div>
           )}
-          <Field label="Nama" required>
+          <Field label="Name" required>
             <input
               className={inputClass}
               value={form.name}
@@ -251,16 +251,16 @@ export default function UsersList() {
               value={form.role}
               onChange={(e) => setForm({ ...form, role: e.target.value })}
             >
-              <option value="user">user (pasien)</option>
-              <option value="admin">admin</option>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
             </select>
           </Field>
           <div className="flex justify-end gap-2 pt-2">
             <Button type="button" variant="secondary" onClick={() => setShowAdd(false)}>
-              Batal
+              Cancel
             </Button>
             <Button type="submit" disabled={saving}>
-              {saving ? "Menyimpan..." : "Simpan"}
+              {saving ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>
@@ -268,8 +268,8 @@ export default function UsersList() {
 
       <ConfirmDialog
         open={Boolean(deleteTarget)}
-        title="Hapus user ini?"
-        message={`Akun "${deleteTarget?.name}" beserta seluruh relasinya akan dihapus permanen (sesuai perilaku DELETE di backend).`}
+        title="Delete this user?"
+        message={`The account "${deleteTarget?.name}" and all related data will be permanently deleted (per backend DELETE behavior).`}
         loading={deleting}
         onCancel={() => setDeleteTarget(null)}
         onConfirm={handleDelete}

@@ -95,7 +95,7 @@ export default function MedicationsSchedulePage() {
   const submitMed = async (e) => {
     e.preventDefault();
     if (!medForm.generic_name || !medForm.dosage_form || !medForm.strength) {
-      setMedError("Nama generik, bentuk sediaan, dan kekuatan wajib diisi.");
+      setMedError("Generic name, dosage form, and strength are required.");
       return;
     }
     setSaving(true);
@@ -104,10 +104,10 @@ export default function MedicationsSchedulePage() {
       const payload = { ...medForm, user_id: userId, brand_name: medForm.brand_name || null };
       if (medModal.data) {
         await updateMedication(medModal.data.id, payload);
-        toast.success("Obat berhasil diperbarui");
+        toast.success("Medication updated successfully");
       } else {
         await createMedication(payload);
-        toast.success("Obat berhasil ditambahkan");
+        toast.success("Medication added successfully");
       }
       setMedModal({ open: false, data: null });
       load();
@@ -121,7 +121,7 @@ export default function MedicationsSchedulePage() {
     setDeleting(true);
     try {
       await deleteMedication(medDelete.id);
-      toast.success("Obat berhasil dihapus");
+      toast.success("Medication deleted successfully");
       setMedDelete(null);
       load();
     } catch (err) {
@@ -151,7 +151,7 @@ export default function MedicationsSchedulePage() {
   const submitSched = async (e) => {
     e.preventDefault();
     if (!schedForm.medication_id || !schedForm.schedule_date) {
-      setSchedError("Obat dan tanggal jadwal wajib diisi.");
+      setSchedError("Medication and schedule date are required.");
       return;
     }
     setSaving(true);
@@ -168,10 +168,10 @@ export default function MedicationsSchedulePage() {
         // Endpoint PUT terbaru mendukung update menyeluruh (medication_id,
         // schedule_date, status, takenAt, late) — bukan cuma status seperti versi lama.
         await updateSchedule(schedModal.data.id, payload);
-        toast.success("Jadwal berhasil diperbarui");
+        toast.success("Schedule updated successfully");
       } else {
         await createSchedule(payload);
-        toast.success("Jadwal berhasil ditambahkan");
+        toast.success("Schedule added successfully");
       }
       setSchedModal({ open: false, data: null });
       load();
@@ -185,7 +185,7 @@ export default function MedicationsSchedulePage() {
     setDeleting(true);
     try {
       await deleteSchedule(schedDelete.id);
-      toast.success("Jadwal berhasil dihapus");
+      toast.success("Schedule deleted successfully");
       setSchedDelete(null);
       load();
     } catch (err) {
@@ -195,28 +195,28 @@ export default function MedicationsSchedulePage() {
     }
   };
 
-  if (loading) return <LoadingState label="Memuat data obat & jadwal..." />;
+  if (loading) return <LoadingState label="Loading medications & schedules..." />;
   if (error) return <ErrorState message={error} onRetry={load} />;
 
   return (
     <div className="space-y-5">
       <Card>
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-800">Data Obat</h3>
-          <Button onClick={openMedCreate}>+ Tambah Obat</Button>
+          <h3 className="text-sm font-bold text-slate-800">Medications</h3>
+          <Button onClick={openMedCreate}>+ Add Medication</Button>
         </div>
         {medications.length === 0 ? (
-          <EmptyState title="Belum ada data obat" icon="💊" />
+          <EmptyState title="No medications yet" icon="💊" />
         ) : (
           <div className="overflow-x-auto rounded-lg border border-surface-border">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-muted text-left text-xs font-semibold uppercase text-slate-500">
-                  <th className="px-3 py-2">Nama Obat</th>
-                  <th className="px-3 py-2">Kekuatan</th>
-                  <th className="px-3 py-2">Rute</th>
-                  <th className="px-3 py-2">Aturan Makan</th>
-                  <th className="px-3 py-2">Aksi</th>
+                  <th className="px-3 py-2">Medication</th>
+                  <th className="px-3 py-2">Strength</th>
+                  <th className="px-3 py-2">Route</th>
+                  <th className="px-3 py-2">Meal Relation</th>
+                  <th className="px-3 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-border">
@@ -243,7 +243,7 @@ export default function MedicationsSchedulePage() {
                           onClick={() => setMedDelete(m)}
                           className="rounded-md bg-danger-500 px-2 py-1 text-xs text-white hover:bg-danger-600"
                         >
-                          Hapus
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -256,32 +256,32 @@ export default function MedicationsSchedulePage() {
       </Card>
 
       <Card>
-        <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-bold text-slate-800">Jadwal Minum Obat</h3>
+          <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-sm font-bold text-slate-800">Medication Schedules</h3>
           <Button onClick={openSchedCreate} disabled={medications.length === 0}>
-            + Tambah Jadwal
+            + Add Schedule
           </Button>
         </div>
         {medications.length === 0 && (
-          <p className="mb-2 text-xs text-amber-600">Tambahkan data obat terlebih dahulu sebelum membuat jadwal.</p>
+          <p className="mb-2 text-xs text-amber-600">Add medications first before creating schedules.</p>
         )}
         {schedules.length === 0 ? (
-          <EmptyState title="Belum ada jadwal obat" icon="⏰" />
+          <EmptyState title="No schedules yet" icon="⏰" />
         ) : (
           <div className="overflow-x-auto rounded-lg border border-surface-border">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-muted text-left text-xs font-semibold uppercase text-slate-500">
-                  <th className="px-3 py-2">Jadwal</th>
-                  <th className="px-3 py-2">Obat</th>
+                  <th className="px-3 py-2">Schedule</th>
+                  <th className="px-3 py-2">Medication</th>
                   <th className="px-3 py-2">Status</th>
-                  <th className="px-3 py-2">Aksi</th>
+                  <th className="px-3 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-border">
                 {schedules.map((s) => (
                   <tr key={s.id}>
-                    <td className="px-3 py-2">{new Date(s.schedule_date).toLocaleString("id-ID")}</td>
+                    <td className="px-3 py-2">{new Date(s.schedule_date).toLocaleString("en-US")}</td>
                     <td className="px-3 py-2">
                       {s.generic_name} {s.brand_name ? `(${s.brand_name})` : ""}
                     </td>
@@ -302,7 +302,7 @@ export default function MedicationsSchedulePage() {
                           onClick={() => setSchedDelete(s)}
                           className="rounded-md bg-danger-500 px-2 py-1 text-xs text-white hover:bg-danger-600"
                         >
-                          Hapus
+                          Delete
                         </button>
                       </div>
                     </td>
@@ -315,32 +315,32 @@ export default function MedicationsSchedulePage() {
       </Card>
 
       {/* Medication modal */}
-      <Modal open={medModal.open} title={medModal.data ? "Edit Obat" : "Tambah Obat"} onClose={() => setMedModal({ open: false, data: null })}>
+      <Modal open={medModal.open} title={medModal.data ? "Edit Medication" : "Add Medication"} onClose={() => setMedModal({ open: false, data: null })}>
         <form onSubmit={submitMed} className="space-y-4">
           {medError && <div className="rounded-lg bg-danger-50 px-3 py-2 text-sm text-danger-600">{medError}</div>}
-          <Field label="Nama Generik" required>
+          <Field label="General Name" required>
             <input className={inputClass} value={medForm.generic_name} onChange={(e) => setMedForm({ ...medForm, generic_name: e.target.value })} />
           </Field>
-          <Field label="Nama Merek">
+          <Field label="Brand Name">
             <input className={inputClass} value={medForm.brand_name || ""} onChange={(e) => setMedForm({ ...medForm, brand_name: e.target.value })} />
           </Field>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Bentuk Sediaan" required>
+            <Field label="Dosage Form" required>
               <input className={inputClass} value={medForm.dosage_form} onChange={(e) => setMedForm({ ...medForm, dosage_form: e.target.value })} />
             </Field>
-            <Field label="Kekuatan" required>
+            <Field label="Strength" required>
               <input className={inputClass} value={medForm.strength} onChange={(e) => setMedForm({ ...medForm, strength: e.target.value })} />
             </Field>
           </div>
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Rute">
+            <Field label="Route">
               <select className={inputClass} value={medForm.route} onChange={(e) => setMedForm({ ...medForm, route: e.target.value })}>
                 {ROUTE_OPTIONS.map((r) => (
                   <option key={r} value={r}>{r}</option>
                 ))}
               </select>
             </Field>
-            <Field label="Aturan Makan">
+            <Field label="Meal Relation">
               <select className={inputClass} value={medForm.meal_relation} onChange={(e) => setMedForm({ ...medForm, meal_relation: e.target.value })}>
                 {MEAL_RELATION_OPTIONS.map((r) => (
                   <option key={r} value={r}>{r.replaceAll("_", " ")}</option>
@@ -349,19 +349,19 @@ export default function MedicationsSchedulePage() {
             </Field>
           </div>
           <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="secondary" onClick={() => setMedModal({ open: false, data: null })}>Batal</Button>
-            <Button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan"}</Button>
+            <Button type="button" variant="secondary" onClick={() => setMedModal({ open: false, data: null })}>Cancel</Button>
+            <Button type="submit" disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
           </div>
         </form>
       </Modal>
 
       {/* Schedule modal */}
-      <Modal open={schedModal.open} title={schedModal.data ? "Edit Jadwal Obat" : "Tambah Jadwal Obat"} onClose={() => setSchedModal({ open: false, data: null })}>
+      <Modal open={schedModal.open} title={schedModal.data ? "Edit Medication Schedule" : "Add Medication Schedule"} onClose={() => setSchedModal({ open: false, data: null })}>
         <form onSubmit={submitSched} className="space-y-4">
           {schedError && <div className="rounded-lg bg-danger-50 px-3 py-2 text-sm text-danger-600">{schedError}</div>}
-          <Field label="Obat" required>
+          <Field label="Medication" required>
             <select className={inputClass} value={schedForm.medication_id} onChange={(e) => setSchedForm({ ...schedForm, medication_id: e.target.value })}>
-              <option value="">Pilih obat...</option>
+              <option value="">Select medication...</option>
               {medications.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.generic_name} {m.brand_name ? `(${m.brand_name})` : ""} — {m.strength}
@@ -369,7 +369,7 @@ export default function MedicationsSchedulePage() {
               ))}
             </select>
           </Field>
-          <Field label="Tanggal & Jam Jadwal" required>
+          <Field label="Schedule Date & Time" required>
             <input type="datetime-local" className={inputClass} value={schedForm.schedule_date} onChange={(e) => setSchedForm({ ...schedForm, schedule_date: e.target.value })} />
           </Field>
           <Field label="Status">
@@ -380,33 +380,33 @@ export default function MedicationsSchedulePage() {
             </select>
           </Field>
           {schedForm.status === "taken" && (
-            <Field label="Waktu Diminum">
+            <Field label="Taken At">
               <input type="datetime-local" className={inputClass} value={schedForm.takenAt} onChange={(e) => setSchedForm({ ...schedForm, takenAt: e.target.value })} />
             </Field>
           )}
-          <Field label="Terlambat?">
+          <Field label="Late?">
             <select className={inputClass} value={schedForm.late} onChange={(e) => setSchedForm({ ...schedForm, late: e.target.value })}>
-              <option value={0}>Tidak</option>
-              <option value={1}>Ya</option>
+              <option value={0}>No</option>
+              <option value={1}>Yes</option>
             </select>
           </Field>
           <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="secondary" onClick={() => setSchedModal({ open: false, data: null })}>Batal</Button>
-            <Button type="submit" disabled={saving}>{saving ? "Menyimpan..." : "Simpan"}</Button>
+            <Button type="button" variant="secondary" onClick={() => setSchedModal({ open: false, data: null })}>Cancel</Button>
+            <Button type="submit" disabled={saving}>{saving ? "Saving..." : "Save"}</Button>
           </div>
         </form>
       </Modal>
 
       <ConfirmDialog
         open={Boolean(medDelete)}
-        message={`Data obat "${medDelete?.generic_name}" akan dihapus permanen, termasuk jadwal terkait (FK CASCADE).`}
+        message={`Medication "${medDelete?.generic_name}" will be permanently deleted, including related schedules.`}
         loading={deleting}
         onCancel={() => setMedDelete(null)}
         onConfirm={confirmMedDelete}
       />
       <ConfirmDialog
         open={Boolean(schedDelete)}
-        message="Jadwal obat ini akan dihapus permanen."
+        message="This medication schedule will be permanently deleted."
         loading={deleting}
         onCancel={() => setSchedDelete(null)}
         onConfirm={confirmSchedDelete}
