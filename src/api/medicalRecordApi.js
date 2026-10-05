@@ -44,6 +44,6 @@ export const deleteMedicalRecord = (id) => axiosClient.delete(`/medical-records/
 // backend menambahkan proteksi token di endpoint ini nanti, link ini perlu
 // diubah menjadi fetch dengan header Authorization lalu di-blob-kan.
 export const getFileViewUrl = (filePath) => {
-  const base = (import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api").replace(/\/$/, "");
+  const base = (import.meta.env.VITE_API_BASE_URL).replace(/\/$/, "");
   return `${base}/medical-records/view?path=${encodeURIComponent(filePath)}`;
 };
