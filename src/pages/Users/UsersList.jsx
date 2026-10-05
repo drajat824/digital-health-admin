@@ -160,7 +160,7 @@ export default function UsersList() {
                       <td className="px-4 py-3 font-medium text-slate-800">{u.name}</td>
                       <td className="px-4 py-3">{u.email}</td>
                       <td className="px-4 py-3">
-                        <Badge tone="blue">{u.role}</Badge>
+                        <Badge tone="blue">{u?.role}</Badge>
                       </td>
                       <td className="px-4 py-3">
                         <button
@@ -248,7 +248,7 @@ export default function UsersList() {
           <Field label="Role">
             <select
               className={inputClass}
-              value={form.role}
+              value={form?.role}
               onChange={(e) => setForm({ ...form, role: e.target.value })}
             >
               <option value="user">User</option>

@@ -19,7 +19,7 @@ export function AuthProvider({ children }) {
 
     // Gerbang admin di sisi client: backend belum punya middleware role-check,
     // jadi kita tolak akses di sini jika role bukan 'admin'.
-    if (newUser.role !== "admin") {
+    if (newUser?.role !== "admin") {
       throw new Error(
         "Akun ini bukan admin. Hanya akun dengan role 'admin' yang dapat mengakses dashboard ini."
       );
